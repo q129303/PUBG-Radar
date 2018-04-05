@@ -129,60 +129,60 @@ object GameStateCMD : GameListener
 //        31->{
 //          print("")
 //        }
-          32   ->
+          34   ->
           {
             NumJoinPlayers = propertyInt()
           }
-          33   ->
+          35   ->
           {
             NumAlivePlayers = propertyInt()
 //          println(NumAlivePlayers)
           }
-          34   ->
+          36   ->
           {
             val NumAliveZombiePlayers = propertyInt()
             val b = NumAliveZombiePlayers
           }
-          35   ->
+          37   ->
           {
             NumAliveTeams = propertyInt()
           }
-          36   ->
+          38   ->
           {
             val NumStartPlayers = propertyInt()
             val b = NumStartPlayers
           }
-          37   ->
+          39   ->
           {
             val NumStartTeams = propertyInt()
             val b = NumStartTeams
           }
-          38   ->
+          40   ->
           {
             val pos = propertyVector()
             SafetyZonePosition.set(pos.x, pos.y)
           }
-          39   ->
+          41   ->
           {
             SafetyZoneRadius = propertyFloat()
           }
-          40   ->
+          42   ->
           {
             val pos = propertyVector()
             PoisonGasWarningPosition.set(pos.x, pos.y)
           }
-          41   ->
+          43   ->
           {
             PoisonGasWarningRadius = propertyFloat()
           }
-          42   ->
+          44   ->
           {
             val pos = propertyVector()
             RedZonePosition.set(pos.x, pos.y)
 
             val b = RedZonePosition
           }
-          43   ->
+          45   ->
           {
             RedZoneRadius = propertyFloat()
             val b = RedZoneRadius
@@ -190,50 +190,50 @@ object GameStateCMD : GameListener
 //        44->{
 //
 //        }
-          45   ->
+          47   ->
           {
             TotalReleaseDuration = propertyFloat()
             val b = TotalReleaseDuration
           }
-          46   ->
+          48   ->
           {
             ElapsedReleaseDuration = propertyFloat()
             val b = ElapsedReleaseDuration
           }
-          47   ->
+          49   ->
           {
             TotalWarningDuration = propertyFloat()
           }
-          48   ->
+          50   ->
           {
             ElapsedWarningDuration = propertyFloat()
           }
-          49   ->
+          51   ->
           {
             val bIsGasRelease = propertyBool()
           }
-          50   ->
+          52   ->
           {
             isTeamMatch = propertyBool()
           }
-          51   ->
+          53   ->
           {
             val bIsZombieMode = propertyBool()
           }
-          52   ->
+          54   ->
           {
             val pos = propertyVector()
             SafetyZoneBeginPosition.set(pos.x, pos.y)
           }
-          53   ->
+          55   ->
           {
             SafetyZoneBeginRadius = propertyFloat()
           }
-          54   ->
+          56   ->
           {
             val MatchStartType = propertyByte()
           }
-          55   -> return false
+          57   -> return false
           else -> return ActorCMD.process(actor, bunch, repObj, waitingHandle, data)
         }
         return true

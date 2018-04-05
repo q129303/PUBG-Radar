@@ -180,9 +180,9 @@ object CharacterCMD
             val a = remote_CastAnim
           }
           46   ->
-          {
-            val CurrentVariableZoomLevel = propertyInt()
-            val b = CurrentVariableZoomLevel
+          {//new name in 3.7.27.18 CurrentWeaponZoomLevel, old name CurrentVariableZoomLevel
+            val CurrentWeaponZoomLevel = propertyInt()
+            val b = CurrentWeaponZoomLevel
           }
           47   ->
           {
@@ -224,141 +224,141 @@ object CharacterCMD
             val b = bIsInVehicleRemote
           }
           55   ->
+          {//new for 3.7.27.18
+            val SpectatedCount = propertyInt()
+            val b = SpectatedCount
+          }
+          56   ->
           {
             val (teamsId) = propertyObject()
               actor.teamID = teamsId
           }
-          56   ->
+          57   ->
           {//struct FTakeHitInfo
             val ActualDamage = propertyFloat()
 //          println("ActualDamage=$ActualDamage")
           }
-          57   ->
+          58   ->
           {
             val damageType = propertyObject()
 //          println("damageType=$damageType")
           }
-          58   ->
+          59   ->
           {
             val PlayerInstigator = propertyObject()
 //          if (PlayerInstigator.first in actors)
 //            println("PlayerInstigator=${actors[PlayerInstigator.first]}")
           }
-          59   ->
+          60   ->
           {
             val DamageOrigin = propertyVectorQ()
 //          println("DamageOrigin=$DamageOrigin")
           }
-          60   ->
+          61   ->
           {
             val RelHitLocation = propertyVectorQ()
 //          println("RelHitLocation=$RelHitLocation")
           }
-          61   ->
+          62   ->
           {
             val BoneName = propertyName()
 //          println("BoneName=$BoneName")
           }
-          62   ->
+          63   ->
           {
             val DamageMaxRadius = propertyFloat()
 //          println("DamageMaxRadius=$DamageMaxRadius")
           }
-          63   ->
+          64   ->
           {
             var ShotDirPitch = propertyByte()
             val a = ShotDirPitch * byteRotationScale
 //          println("ShotDirPitch=$a")
           }
-          64   ->
+          65   ->
           {
             val ShotDirYaw = propertyByte()
             val a = ShotDirYaw * byteRotationScale
 //          println("ShotDirYaw=$a")
           }
-          65   ->
+          66   ->
           {
             val bPointDamage = propertyBool()
 //          println("bPointDamage=$bPointDamage")
           }
-          66   ->
+          67   ->
           {
             val bRadialDamage = propertyBool()
 //          println("bRadialDamage=$bRadialDamage")
           }
-          67   ->
+          68   ->
           {
             val bKilled = propertyBool()
 //          println("bKilled=$bKilled")
           }
-          68   ->
+          69   ->
           {
             val EnsureReplicationByte = propertyByte()
             val b = EnsureReplicationByte
           }
-          69   ->
+          70   ->
           {
             val AttackerWeaponName = propertyName()
 //          println("AttackerWeaponName=$AttackerWeaponName")
           }
-          70   ->
+          71   ->
           {
             val AttackerLocation = propertyVector()
           }
-          71   ->
+          72   ->
           {
             val TargetingType = readInt(4)
             val a = TargetingType
           }
-          72   ->
+          73   ->
           {
             val reviveCastingTime = propertyFloat()
             val a = reviveCastingTime
           }
-          73   ->
+          74   ->
           {
             val bWantsToRun = propertyBool()
             val b = bWantsToRun
           }
-          74   ->
+          75   ->
           {
             val bWantsToSprint = propertyBool()
             val b = bWantsToSprint
           }
-          75   ->
+          76   ->
           {
             val bWantsToSprintingAuto = propertyBool()
             val b = bWantsToSprintingAuto
           }
-          76   ->
+          77   ->
           {
             val bWantsToRollingLeft = propertyBool()
             val b = bWantsToRollingLeft
           }
-          77   ->
+          78   ->
           {
             val bWantsToRollingRight = propertyBool()
             val b = bWantsToRollingRight
           }
-          78   ->
+          79   ->
           {
             val bIsPeekLeft = propertyBool()
             val b = bIsPeekLeft
           }
-          79   ->
+          80   ->
           {
             val bIsPeekRight = propertyBool()
             val b = bIsPeekRight
           }
-          80   ->
+          81   ->
           {
             val IgnoreRotation = propertyBool()
             val b = IgnoreRotation
-          }
-          81   ->
-          {
-            val bIsGroggying = propertyBool()
-            val b = bIsGroggying
           }
           82   ->
           {
@@ -367,60 +367,65 @@ object CharacterCMD
           }
           83   ->
           {
+            val bIsThirdPerson = propertyBool()
+            val b = bIsThirdPerson
+          }
+          84   ->
+          {
             val bIsReviving = propertyBool()
             actor.isReviving = bIsReviving
           }
-          84   ->
+          85   ->
           {
             val bIsWeaponObstructed = propertyBool()
             val b = bIsWeaponObstructed
           }
-          85   ->
+          86   ->
           {
             val bIsCoatEquipped = propertyBool()
             val b = bIsCoatEquipped
           }
-          86   ->
+          87   ->
           {
             val bIsZombie = propertyBool()
             val b = bIsZombie
           }
-          87   ->
+          88   ->
           {
             val bIsThrowHigh = propertyBool()
             val b = bIsThrowHigh
           }
-          88   ->
+          89   ->
           {
             val bUseRightShoulderAiming = propertyBool()
             val b = bUseRightShoulderAiming
           }
-          89   ->
+          90   ->
           {
             val GunDirectionSway = readRotationShort()//propertyRotator()
             val b = GunDirectionSway
           }
-          90   ->
+          91   ->
           {
             val AimOffsets = propertyVectorNormal()
             val b = AimOffsets
           }
-          91   ->
+          92   ->
           {
             val NetOwnerController = readObject()
             val b = NetOwnerController
           }
-          92   ->
+          93   ->
           {
             val bAimStateActive = propertyBool()
             val b = bAimStateActive
           }
-          93   ->
+          94   ->
           {
             val bIsHoldingBreath = propertyBool()
             val b = bIsHoldingBreath
           }
-          94   ->
+          95   ->
           {
             val health = propertyFloat()
             actor.health = health
@@ -428,62 +433,62 @@ object CharacterCMD
 
 //          println("health=$health")
           }
-          95   ->
+          96   ->
           {
             val healthMax = propertyFloat()
 //          println("health max=$healthMax")
           }
-          96   ->
+          97   ->
           {
             val GroggyHealth = propertyFloat()
             actor.groggyHealth = GroggyHealth
           }
-          97   ->
+          98   ->
           {
             val GroggyHealthMax = propertyFloat()
 //          println("GroggyHealthMax=$GroggyHealthMax")
           }
-          98   ->
+          99   ->
           {
             val BoostGauge = propertyFloat()
             actor.boostGauge = BoostGauge
           }
-          99   ->
+          100   ->
           {
             val BoostGaugeMax = propertyFloat()
 //          println("BoostGaugeMax=$BoostGaugeMax")
           }
-          100  ->
+          101  ->
           {
             val ShoesSoundType = readInt(8)
             val b = ShoesSoundType
           }
-          101  ->
+          102  ->
           {
             val VehicleRiderComponent = readObject()
             val b = VehicleRiderComponent
           }
-          102  ->
+          103  ->
           {
             val bIsActiveRagdollActive = propertyBool()
             val b = bIsActiveRagdollActive
           }
-          103  ->
+          104  ->
           {
             val PreReplicatedStanceMode = readInt(4)
             val b = PreReplicatedStanceMode
           }
-          104  ->
+          105  ->
           {
             val bServerFinishedVault = propertyBool()
             val b = bServerFinishedVault
           }
-          105  ->
+          106  ->
           {
             val bWantsToCancelVault = propertyBool()
             val b = bWantsToCancelVault
           }
-          106  ->
+          107  ->
           {
             val bIsDemoVaulting_CP = propertyBool()
             val b = bIsDemoVaulting_CP
