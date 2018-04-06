@@ -93,9 +93,20 @@ object TeamCMD
             actor.memberNumber = MemberNumber
           }
           31   ->
-          {//UniqueId
+          {
+            val bUsingSquadInTeam = readBit()
+          }
+          32   ->
+          {
+            val SquadIndex = readInt8()
+          }
+          33   ->
+          {
+            val SquadMemberIndex = readInt8()
+          }
+          34   ->
+          {
             val UniqueId = readString()
-            val a = UniqueId
           }
           else -> return ActorCMD.process(actor, bunch, repObj, waitingHandle, data)
         }

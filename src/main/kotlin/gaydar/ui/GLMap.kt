@@ -298,7 +298,7 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
       RIGHT -> {
         pinLocation.set(pinLocation.set(screenX.toFloat(), screenY.toFloat()).windowToMap())
         camera.update()
-        println(pinLocation)
+        //println(pinLocation)
         return true
       }
       LEFT -> {
@@ -1686,7 +1686,7 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
 
         } else {
           draw(icon, x, y, 0f, scale, it._3)
-        println(itemHeight)
+        //println(itemHeight)
         }
       }
           when {
