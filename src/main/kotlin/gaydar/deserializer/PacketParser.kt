@@ -4,6 +4,7 @@ package gaydar.deserializer
 
 import gaydar.haveEncryptionToken
 import gaydar.EncryptionToken
+import gaydar.missedDecryption
 import gaydar.deserializer.channel.ActorChannel
 import gaydar.deserializer.channel.Channel.Companion.closedInChannels
 import gaydar.deserializer.channel.Channel.Companion.closedOutChannels
@@ -91,30 +92,34 @@ fun proc_raw_packet(raw : ByteArray, client : Boolean = true)
   }
   else if (haveEncryptionToken)
   {
-    val reader = Buffer(raw, 0, raw.size * 8)
-    val IsHandshake = reader.readBit()
-    IsEncrypted = reader.readBit()
-    val nonce = reader.readBits(96)
-    val tag = reader.readBits(128)
-    var bitsLeft = reader.bitsLeft()
-    bitsLeft = bitsLeft - (bitsLeft % 8)
-    while (bitsLeft > 0)
+    var lastByte = raw.last().toInt() and 0xFF
+    if (lastByte != 0)
     {
+      var bitsize = (raw.size * 8) - 1
+      while ((lastByte and 0x80) == 0)
+      {
+        lastByte *= 2
+        bitsize--
+      }
+      val reader = Buffer(raw, 0, bitsize)
+      val IsHandshake = reader.readBit()
+      IsEncrypted = reader.readBit()
+      val nonce = reader.readBits(96)
+      val tag = reader.readBits(128)
+      val ciphertext = reader.readBits(reader.bitsLeft())
+      val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+      val keySpec = SecretKeySpec(EncryptionToken, "AES")
+      val paramSpec = GCMParameterSpec(128, nonce)
+      cipher.init(Cipher.DECRYPT_MODE, keySpec, paramSpec);
+      cipher.update(ciphertext)
       try
       {
-        val reader2 = Buffer(raw, 1 + 1 + 96 + 128, bitsLeft)
-        val ciphertext = reader2.readBits(bitsLeft)
-        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-        val keySpec = SecretKeySpec(EncryptionToken, "AES")
-        val paramSpec = GCMParameterSpec(128, nonce)
-        cipher.init(Cipher.DECRYPT_MODE, keySpec, paramSpec);
-        cipher.update(ciphertext)
         val plaintext = cipher.doFinal(tag)
         if (plaintext.isEmpty()) return
-        var lastByte = plaintext.last().toInt() and 0xFF
+        lastByte = plaintext.last().toInt() and 0xFF
         if (lastByte != 0)
         {
-          var bitsize = (plaintext.size * 8) - 2
+          bitsize = (plaintext.size * 8) - 2
           while ((lastByte and 0x80) == 0)
           {
             lastByte *= 2
@@ -126,10 +131,9 @@ fun proc_raw_packet(raw : ByteArray, client : Boolean = true)
       }
       catch (e: javax.crypto.AEADBadTagException)
       {
-        bitsLeft -= 8
-        continue
+        missedDecryption++
+        println("Missed decrypt count $missedDecryption bitsize $bitsize")
       }
-      break
     }
   }
 }

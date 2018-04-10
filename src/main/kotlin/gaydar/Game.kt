@@ -12,6 +12,7 @@ var gameStarted = false
 var isErangel = true
 var haveEncryptionToken = false
 var EncryptionToken = ByteArray(24)
+var missedDecryption = 0
 
 interface GameListener
 {
@@ -42,6 +43,7 @@ fun gameOver()
   gameStarted = false
   haveEncryptionToken = false
   EncryptionToken.fill(0)
+  missedDecryption = 0
   gameListeners.forEach { it.onGameOver() }
 }
 

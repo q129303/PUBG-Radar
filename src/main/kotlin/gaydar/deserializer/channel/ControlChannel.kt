@@ -23,9 +23,12 @@ class ControlChannel(ChIndex : Int, client : Boolean = true) : Channel(ChIndex, 
         var IsLittleEndian = bunch.readUInt8()
         var RemoteNetworkVersion = bunch.readUInt32()
         val EncryptionTokenString = bunch.readString()
-        EncryptionToken = EncryptionTokenString.toByteArray(Charsets.UTF_8)
-        haveEncryptionToken = true
-        println("Got EncryptionToken $EncryptionTokenString")
+        if (EncryptionTokenString.length == 24)
+        {
+          EncryptionToken = EncryptionTokenString.toByteArray(Charsets.UTF_8)
+          haveEncryptionToken = true
+          println("Got EncryptionToken $EncryptionTokenString")
+        }
       }
       NMT_Welcome ->
       {// server tells client they're ok'ed to load the server's level
