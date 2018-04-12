@@ -181,7 +181,7 @@ object CharacterCMD
           }
           46   ->
           {//new name in 3.7.27.18 CurrentWeaponZoomLevel, old name CurrentVariableZoomLevel
-            val CurrentWeaponZoomLevel = propertyInt()
+            val CurrentWeaponZoomLevel = propertyByte()
             val b = CurrentWeaponZoomLevel
           }
           47   ->

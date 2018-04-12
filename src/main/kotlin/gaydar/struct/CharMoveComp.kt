@@ -51,7 +51,7 @@ fun charmovecomp(bunch : Bunch, client : Boolean = false)
   bunch.skipBits(payloadBits)
   when (repIndex)
   {
-    29   ->
+    29, 33   ->
     {//void ServerMove(float TimeStamp, const struct FVector_NetQuantize10& InAccel, const struct FVector_NetQuantize100& ClientLoc, unsigned char CompressedMoveFlags, unsigned char ClientRoll, uint32_t View, class UPrimitiveComponent* ClientMovementBase, const struct FName& ClientBaseBoneName, unsigned char ClientMovementMode);
       if (rpcPayload.readBit())
       {
@@ -81,7 +81,7 @@ fun charmovecomp(bunch : Bunch, client : Boolean = false)
 
       }
     }
-    30   ->
+    30, 34   ->
     {//void ServerMoveDual(float TimeStamp0, const struct FVector_NetQuantize10& InAccel0, unsigned char PendingFlags, uint32_t View0, float TimeStamp, const struct FVector_NetQuantize10& InAccel, const struct FVector_NetQuantize100& ClientLoc, unsigned char NewFlags, unsigned char ClientRoll, uint32_t View, class UPrimitiveComponent* ClientMovementBase, const struct FName& ClientBaseBoneName, unsigned char ClientMovementMode);
       if (rpcPayload.readBit())
       {
