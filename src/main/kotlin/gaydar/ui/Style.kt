@@ -24,7 +24,13 @@ val teamColor = arrayOf(
       Color(1f, 0.5f, 0f, 1f),
       Color(1f, 1f, 0f, 1f),
       Color(0f, 0.58f, 1f, 1f),
-      Color(0.714f, 1f, 0f, 1f)
+      Color(0.714f, 1f, 0f, 1f),
+      Color(0.714f, 1f, 0f, 1f),
+      Color(0.714f, 1f, 0f, 1f),
+        Color(0.714f, 1f, 0f, 1f),
+        Color(0.714f, 1f, 0f, 1f),
+        Color(0.714f, 1f, 0f, 1f),
+        Color(0.714f, 1f, 0f, 1f)
                        )
 val safeDirectionColor = Color(1f, 1f, 1f, 0.5f)
 val visionColor = Color(1f, 1f, 1f, 0.1f)

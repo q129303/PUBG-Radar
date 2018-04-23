@@ -147,6 +147,7 @@ class Settings
 
         // Toggle Mini-Map
         var drawDaMap : Int = 1,
+        val northMiniMap: Int = 1,
         // private var toggleVehicles = -1
         //  private var toggleVNames = -1
 
@@ -174,6 +175,7 @@ class Settings
         val drawcompass_Key : String = Input.Keys.toString(Input.Keys.F2),
         val toggleView_Key : String = Input.Keys.toString(Input.Keys.F4),
         val drawDaMap_Key : String = Input.Keys.toString(Input.Keys.F3),
+        val northMiniMap_Key : String = Input.Keys.toString(Input.Keys.F6),
         val drawmenu_Key : String = Input.Keys.toString(Input.Keys.F12),
 
         val filterWeapon_Key : String = Input.Keys.toString(Input.Keys.NUMPAD_1),
@@ -251,9 +253,11 @@ class Settings
         val hpred_color : Color = Color.RED
 
 
-                         )
+                         ) {
 
-  val settingsname = "settings.json"
+  }
+
+    val settingsname = "settings.json"
 
   fun loadsettings() : jsonsettings
   {

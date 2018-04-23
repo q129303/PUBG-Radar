@@ -82,6 +82,9 @@ import kotlin.collections.component2
 import kotlin.math.absoluteValue
 import kotlin.math.asin
 import kotlin.math.pow
+import com.badlogic.gdx.math.MathUtils
+
+
 
 typealias renderInfo = tuple4<Actor, Float, Float, Float>
 
@@ -196,6 +199,7 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
   private var drawmenu = jsettings.drawmenu
   private var toggleView = jsettings.toggleView
   private var drawDaMap = jsettings.drawDaMap
+  private var northMiniMap = jsettings.northMiniMap
 
   // Please change your pre-build settings in Settings.kt
   // You can change them in Settings.json after you run the game once too.
@@ -275,7 +279,6 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
 
 
   override fun scrolled(amount: Int): Boolean {
-
     if (mapCamera.zoom >= 0.01f && mapCamera.zoom <= 1f) {
       mapCamera.zoom *= 1.05f.pow(amount)
       miniMapCamera.zoom = if (mapCamera.zoom > 1 / 8f) 1 / 2f else 1 / 4f
@@ -382,6 +385,9 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
     // Toggle Da Minimap
       Input.Keys.valueOf(jsettings.drawDaMap_Key) -> drawDaMap = drawDaMap * -1
 
+    //Toggle only north
+      Input.Keys.valueOf(jsettings.northMiniMap_Key) -> northMiniMap = northMiniMap * -1
+
     // Toggle Menu
       Input.Keys.valueOf(jsettings.drawmenu_Key) -> drawmenu = drawmenu * -1
 
@@ -410,6 +416,7 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
       prevScreenX = screenX.toFloat()
       prevScreenY = screenY.toFloat()
     }
+
     return true
   }
 
@@ -518,7 +525,8 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
             markerAtlas.findRegion("marker1"), markerAtlas.findRegion("marker2"),
             markerAtlas.findRegion("marker3"), markerAtlas.findRegion("marker4"),
             markerAtlas.findRegion("marker5"), markerAtlas.findRegion("marker6"),
-            markerAtlas.findRegion("marker7"), markerAtlas.findRegion("marker8")
+            markerAtlas.findRegion("marker7"), markerAtlas.findRegion("marker8"),
+            markerAtlas.findRegion("marker8"), markerAtlas.findRegion("marker8")
     )
 
     val generatorHub = FreeTypeFontGenerator(Gdx.files.internal("font/AGENCYFB.TTF"))
@@ -593,6 +601,10 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
 
   private val dirUnitVector = Vector2(1f, 0f)
 
+  fun getCameraCurrentXYAngle(cam: OrthographicCamera): Float {
+    return Math.atan2(cam.up.x.toDouble(), cam.up.y.toDouble()).toFloat() * MathUtils.radiansToDegrees
+  }
+
   override fun render() {
     Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -607,7 +619,9 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
       }
     }
     val (selfX, selfY) = selfCoords
+    val camAngle = -getCameraCurrentXYAngle(mapCamera);
     //move camera
+    println(camAngle)
     mapCamera.position.set(selfCoords.x + screenOffsetX, selfCoords.y + screenOffsetY, 0f)
     mapCamera.update()
 
@@ -1181,9 +1195,15 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     val (selfX, selfY) = selfCoords
     miniMapCamera.apply {
+      up.set(0f, 1f, 0f);
       position.set(selfX, selfY, 0f)
+      when(northMiniMap){
+        1 -> rotate(selfDirection)
+        -1 -> rotate(180f)
+      }
       update()
     }
+
     spriteBatch.projectionMatrix = miniMapCamera.combined
     paint {
       draw(
