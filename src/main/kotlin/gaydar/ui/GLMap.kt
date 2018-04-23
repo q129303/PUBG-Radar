@@ -601,9 +601,6 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
 
   private val dirUnitVector = Vector2(1f, 0f)
 
-  fun getCameraCurrentXYAngle(cam: OrthographicCamera): Float {
-    return Math.atan2(cam.up.x.toDouble(), cam.up.y.toDouble()).toFloat() * MathUtils.radiansToDegrees
-  }
 
   override fun render() {
     Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a)
@@ -619,9 +616,6 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
       }
     }
     val (selfX, selfY) = selfCoords
-    val camAngle = -getCameraCurrentXYAngle(mapCamera);
-    //move camera
-    println(camAngle)
     mapCamera.position.set(selfCoords.x + screenOffsetX, selfCoords.y + screenOffsetY, 0f)
     mapCamera.update()
 
