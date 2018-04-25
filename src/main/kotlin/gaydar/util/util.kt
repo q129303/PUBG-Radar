@@ -25,6 +25,8 @@ class Rolling(private val size: Int) {
   }
 
   fun add(x: Float) {
+    if (x < 20 && average > 300){ for (i in 0 until size) samples[i] = x; total = x*size; return }
+    if (x > 300 && average < 180){ for (i in 0 until size) samples[i] = x; total = x*size; return }
     total -= samples[index]
     samples[index] = x
     total += x

@@ -746,8 +746,6 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
       safeZoneHint()
       drawPlayerSprites(parachutes, players)
       drawPlayerInfos(players)
-      spriteBatch.transformMatrix = oldTransformMatrix
-
     }
 
     paint(fontCamera.combined) {
@@ -1744,7 +1742,7 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
           draw(adt, x + 50, y, 0f, airDropTextScale, it._3)
 
         } else {
-          draw(icon, x, y, 0f, scale, it._3)
+          draw(icon, x, y, 0f + 90, scale, it._3)
         //println(itemHeight)
         }
       }
