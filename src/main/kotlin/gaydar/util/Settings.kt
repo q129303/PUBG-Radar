@@ -147,8 +147,8 @@ class Settings
 
         // Toggle Mini-Map
         var drawDaMap : Int = 1,
-        val northMiniMap: Int = 1,
-        val onlyNorthMap: Int = 1,
+        val northMiniMap: Int = -1,
+        val onlyNorthMap: Int = -1,
         // private var toggleVehicles = -1
         //  private var toggleVNames = -1
 
