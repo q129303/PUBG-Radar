@@ -50,6 +50,7 @@ import gaydar.struct.Archetype.*
 import gaydar.struct.Archetype.Plane
 import gaydar.struct.CMD.ActorCMD.actorWithPlayerState
 import gaydar.struct.CMD.CharacterCMD.actorHealth
+import gaydar.struct.CMD.CharacterCMD.spectatedCount
 import gaydar.struct.CMD.GameStateCMD.ElapsedWarningDuration
 import gaydar.struct.CMD.GameStateCMD.MatchElapsedMinutes
 import gaydar.struct.CMD.GameStateCMD.NumAlivePlayers
@@ -738,10 +739,6 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
       drawAirDrop()
     }
 
-
-    val numKills = playerNumKills[selfStateID] ?: 0
-    val zero = numKills.toString()
-
     paint(playerCamera.combined){
       safeZoneHint()
       drawPlayerSprites(parachutes, players)
@@ -753,31 +750,40 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
       else "${MatchElapsedMinutes}min"
 
       // NUMBER PANEL
-      val numText = "$NumAlivePlayers"
+      val numText = NumAlivePlayers.toString()
       layout.setText(hubFont, numText)
       spriteBatch.draw(hubpanel, windowWidth - 130f, windowHeight - 60f)
       hubFontShadow.draw(spriteBatch, "ALIVE", windowWidth - 85f, windowHeight - 29f)
-      hubFont.draw(spriteBatch, "$NumAlivePlayers", windowWidth - 110f - layout.width / 2, windowHeight - 29f)
-      val teamText = "$NumAliveTeams"
+      hubFont.draw(spriteBatch, numText, windowWidth - 110f - layout.width / 2, windowHeight - 29f)
 
-
+      val spectatedCountText = (spectatedCount[selfStateID] ?: 0).toString()
+      val numKillsText = (playerNumKills[selfStateID] ?: 0).toString()
       if (isTeamMatch) {
-        layout.setText(hubFont, teamText)
+        layout.setText(hubFont, spectatedCountText)
         spriteBatch.draw(hubpanel, windowWidth - 260f, windowHeight - 60f)
-        hubFontShadow.draw(spriteBatch, "TEAM", windowWidth - 215f, windowHeight - 29f)
-        hubFont.draw(spriteBatch, "$NumAliveTeams", windowWidth - 240f - layout.width / 2, windowHeight - 29f)
-      }
-      if (isTeamMatch) {
+        hubFontShadow.draw(spriteBatch, "EYES", windowWidth - 215f, windowHeight - 29f)
+        hubFont.draw(spriteBatch, spectatedCountText, windowWidth - 240f - layout.width / 2, windowHeight - 29f)
 
-        layout.setText(hubFont, zero)
+        val numAliveTeamsText = NumAliveTeams.toString()
+        layout.setText(hubFont, numAliveTeamsText)
+        spriteBatch.draw(hubpanel, windowWidth - 390f, windowHeight - 60f)
+        hubFontShadow.draw(spriteBatch, "TEAM", windowWidth - 345f, windowHeight - 29f)
+        hubFont.draw(spriteBatch, numAliveTeamsText, windowWidth - 370f - layout.width / 2, windowHeight - 29f)
+
+        layout.setText(hubFont, numKillsText)
+        spriteBatch.draw(hubpanel, windowWidth - 520f, windowHeight - 60f)
+        hubFontShadow.draw(spriteBatch, "KILLS", windowWidth - 475f, windowHeight - 29f)
+        hubFont.draw(spriteBatch, "$numKillsText", windowWidth - 500f - layout.width / 2, windowHeight - 29f)
+      } else {
+        layout.setText(hubFont, spectatedCountText)
+        spriteBatch.draw(hubpanel, windowWidth - 260f, windowHeight - 60f)
+        hubFontShadow.draw(spriteBatch, "EYES", windowWidth - 215f, windowHeight - 29f)
+        hubFont.draw(spriteBatch, spectatedCountText, windowWidth - 240f - layout.width / 2, windowHeight - 29f)
+
+        layout.setText(hubFont, numKillsText)
         spriteBatch.draw(hubpanel, windowWidth - 390f, windowHeight - 60f)
         hubFontShadow.draw(spriteBatch, "KILLS", windowWidth - 345f, windowHeight - 29f)
-        hubFont.draw(spriteBatch, "$zero", windowWidth - 370f - layout.width / 2, windowHeight - 29f)
-      } else {
-        spriteBatch.draw(hubpanel, windowWidth - 390f + 130f, windowHeight - 60f)
-        hubFontShadow.draw(spriteBatch, "KILLS", windowWidth - 345f + 128f, windowHeight - 29f)
-        hubFont.draw(spriteBatch, "$zero", windowWidth - 370f + 128f - layout.width / 2, windowHeight - 29f)
-
+        hubFont.draw(spriteBatch, "$numKillsText", windowWidth - 370f - layout.width / 2, windowHeight - 29f)
       }
 
 

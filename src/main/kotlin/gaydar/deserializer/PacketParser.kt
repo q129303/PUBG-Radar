@@ -237,10 +237,13 @@ fun Buffer.proc_raw_packet(client : Boolean, wasEncrypted : Boolean = false)
         }
         else                      ->
         {
-          if (chType == CHTYPE_NONE)
-            println("$chSequence lost the first actor creation bunch. just create as we need it.")
-          inChannels[chIndex] = ActorChannel(chIndex, true)
-          outChannels[chIndex] = ActorChannel(chIndex, false)
+          if (haveEncryptionToken)
+          {
+            if (chType == CHTYPE_NONE)
+              println("$chSequence lost the first actor creation bunch. just create as we need it.")
+            inChannels[chIndex] = ActorChannel(chIndex, true)
+            outChannels[chIndex] = ActorChannel(chIndex, false)
+          }
         }
       }
     }

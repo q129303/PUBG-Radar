@@ -13,7 +13,7 @@ import gaydar.util.tuple2
 import java.util.concurrent.ConcurrentHashMap
 
 val playerNames = ConcurrentHashMap<NetworkGUID, String>()
-val playerNumKills = ConcurrentHashMap<NetworkGUID, Int>()
+val playerNumKills = ConcurrentHashMap<NetworkGUID, Long>()
 
 object PlayerStateCMD : GameListener
 {
@@ -33,87 +33,48 @@ object PlayerStateCMD : GameListener
 
   fun process(actor : Actor, bunch : Bunch, repObj : NetGuidCacheObject?, waitingHandle : Int, data : HashMap<String, Any?>) : Boolean
   {
-
-
-    try
-    {
+    //try
+    //{
       actor as PlayerState
       with(bunch) {
         // println("WAITING HANDLE; $waitingHandle")
         when (waitingHandle)
         {
-          16   ->
+          //APlayerState
+          16   -> propertyBool() //bFromPreviousLevel
+          17   -> propertyBool() //bIsABot
+          18   -> propertyBool() //bIsInactive
+          19   -> propertyBool() //bIsSpectator
+          20   -> propertyBool() //bOnlySpectator
+          21   -> propertyByte() //Ping
+          22   -> propertyInt() //PlayerId
+          23   -> actor.name = propertyString()
+          24   -> propertyFloat() //Score
+          25   -> propertyInt() //StartTime
+          26   -> uniqueIds[propertyNetId()] = actor.netGUID
+          27   -> propertyString() //AccountId
+          28   -> propertyBool() //bIsInAircraft
+          29   -> propertyBool() //bIsZombie
+          30   -> attacks.add(tuple2(uniqueIds[propertyString()]!!, actor.netGUID)) //CurrentAttackerPlayerNetId
+          31   -> propertyFloat() //LastHitTime
+          32   -> propertyInt() //MyGameScoreInTeam
+          33   -> readInt(5) //ObserverAuthorityType
+          34   -> propertyFloat() //struct FTslPlayerScores PlayerScores | ScoreByDamage
+          35   -> propertyFloat() //ScoreByKill
+          36   -> propertyFloat() //ScoreByRanking
+          37   -> propertyFloat() //ScoreFactor (end struct)
+          38   -> playerNumKills[actor.netGUID] = propertyUInt32() //struct FTslPlayerStatistics PlayerStatistics | NumKills (end struct)
+          39   -> propertyUInt32() //struct FTslPlayerStatisticsForOwner PlayerStatisticsForOwner | HeadShots
+          40   -> propertyFloat() //LongestDistanceKill
+          41   -> propertyFloat() //TotalGivenDamages
+          42   ->
           {
-            val score = propertyFloat()
-//          println("score=$score")
+            propertyFloat() //TotalMovedDistanceMeter (end struct)
+            selfStateID = actor.netGUID //only self will get this update
           }
-          17   ->
-          {
-            val ping = propertyByte()
-          }
-          18   ->
-          {
-            val name = propertyString()
-            actor.name = name
-            //println("ACTOR NAME: ${actor.netGUID} playerID=$name")
-          }
-          19   ->
-          {
-            val playerID = propertyInt()
-//          println("${actor.netGUID} playerID=$playerID")
-          }
-          20   ->
-          {
-            val bFromPreviousLevel = propertyBool()
-//          println("${actor.netGUID} bFromPreviousLevel=$bFromPreviousLevel")
-          }
-          21   ->
-          {
-            val isABot = propertyBool()
-//          println("${actor.netGUID} isABot=$isABot")
-          }
-          22   ->
-          {
-            val bIsInactive = propertyBool()
-//          println("${actor.netGUID} bIsInactive=$bIsInactive")
-          }
-          23   ->
-          {
-            val bIsSpectator = propertyBool()
-//          println("${actor.netGUID} bIsSpectator=$bIsSpectator")
-          }
-          24   ->
-          {
-            val bOnlySpectator = propertyBool()
-//          println("${actor.netGUID} bOnlySpectator=$bOnlySpectator")
-          }
-          25   ->
-          {
-            val StartTime = propertyInt()
-//          println("${actor.netGUID} StartTime=$StartTime")
-          }
-          26   ->
-          {
-            val uniqueId = propertyNetId()
-            uniqueIds[uniqueId] = actor.netGUID
-//          println("${playerNames[actor.netGUID]}${actor.netGUID} uniqueId=$uniqueId")
-          }
-          27   ->
-          {//indicate player's death
-            val Ranking = propertyInt()
-//          println("${playerNames[actor.netGUID]}${actor.netGUID} Ranking=$Ranking")
-          }
-          28   ->
-          {
-            val AccountId = propertyString()
-//          println("${actor.netGUID} AccountId=$AccountId")
-          }
-          29   ->
-          {
-            val ReportToken = propertyString()
-          }
-          30   ->
-          {//ReplicatedCastableItems
+          43   -> propertyInt() //Ranking
+          44   ->
+          {//TArray<struct FReplicatedCastableItem> ReplicatedCastableItems
             val arraySize = readUInt16()
             actor.castableItems.resize(arraySize)
             var index = readIntPacked()
@@ -126,152 +87,68 @@ object PlayerStateCMD : GameListener
               when (structIdx)
               {
                 0 ->
-                {
+                { //CastableItemClass
                   val (guid, castableItemClass) = readObject()
                   if (castableItemClass != null)
                     element._1 = simplify(castableItemClass.pathName)
                 }
                 1 ->
-                {
-                  val ItemType = readInt(8)
-                  val a = ItemType
-                }
-                2 ->
-                {
+                { //ItemType
                   val itemCount = readInt32()
                   element._2 = itemCount
+                }
+                2 ->
+                { //ItemCount
+                  val ItemType = readInt(8)
+                  val a = ItemType
                 }
               }
               actor.castableItems[arrayIdx] = element
               index = readIntPacked()
             }
-            return true
-          }
-          31   ->
-          {
-            val ObserverAuthorityType = readInt(4)
-          }
-          32   ->
-          {
-            val teamNumber = readInt(100)
-            actor.teamNumber = teamNumber
-          }
-          33   ->
-          {
-            val bIsZombie = propertyBool()
-          }
-          34   ->
-          {
-            val scoreByDamage = propertyFloat()
-            // println("SCORE BY DAMAGE: $scoreByDamage")
-          }
-          35   ->
-          {
-            val ScoreByKill = propertyFloat()
-            // println("SCORE BY KILL: $ScoreByKill")
-          }
-          36   ->
-          {
-            val ScoreByRanking = propertyFloat()
-            //  println("SCORE BY RANKING: $ScoreByRanking")
-          }
-          37   ->
-          {
-
-            val ScoreFactor = propertyFloat()
-            //   println("SCORE FACTOR: $ScoreFactor")
-          }
-          38   ->
-          {
-            val NumKills = propertyInt()
-            //  println("NUM KILLS: $NumKills")
-            // actor.numKills = NumKills
-            playerNumKills[actor.netGUID] = NumKills
-
-          }
-          39   ->
-          {
-            val TotalMovedDistanceMeter = propertyFloat()
-            //println(TotalMovedDistanceMeter)
-            selfStateID = actor.netGUID//only self will get this update
-          }
-          40   ->
-          {
-            val TotalGivenDamages = propertyFloat()
-            //  println("TOTAL GIVEN DAMAGE: $TotalGivenDamages")
-          }
-          41   ->
-          {
-            val LongestDistanceKill = propertyFloat()
-            //    println("LONGEST KILL:  $LongestDistanceKill")
-          }
-          42   ->
-          {
-            val HeadShots = propertyInt()
-            //  println("HEADSHOTS: $HeadShots")
-          }
-          43   ->
-          {//ReplicatedEquipableItems
-            try
-            {
-              val arraySize = readUInt16()
-              actor.equipableItems.resize(arraySize)
-              var index = readIntPacked()
-              while (index != 0)
-              {
-                val idx = index - 1
-                val arrayIdx = idx / 2
-                val structIdx = idx % 2
-                val element = actor.equipableItems[arrayIdx] ?: tuple2("", 0f)
-                when (structIdx)
-                {
-                  0 ->
-                  {
-                    val (guid, equipableItemClass) = readObject()
-                    if (equipableItemClass != null)
-                      element._1 = simplify(equipableItemClass.pathName)
-                    val a = guid
-                  }
-                  1 ->
-                  {
-                    val durability = readFloat()
-                    element._2 = durability
-                    val a = durability
-                  }
-                }
-                actor.equipableItems[arrayIdx] = element
-                index = readIntPacked()
-              }
-              return true
-            }
-            catch (e : Exception)
-            {
-              println("PlayerState is throwing on 43: $e ${e.stackTrace} ${e.message}")
-            }
-
-          }
-          44   ->
-          {
-            val bIsInAircraft = propertyBool()
           }
           45   ->
-          {//LastHitTime
-            val lastHitTime = propertyFloat()
+          {//TArray<struct FReplicatedEquipableItem> ReplicatedEquipableItems
+            val arraySize = readUInt16()
+            actor.equipableItems.resize(arraySize)
+            var index = readIntPacked()
+            while (index != 0)
+            {
+              val idx = index - 1
+              val arrayIdx = idx / 2
+              val structIdx = idx % 2
+              val element = actor.equipableItems[arrayIdx] ?: tuple2("", 0f)
+              when (structIdx)
+              {
+                0 ->
+                { //Durability
+                  val durability = readFloat()
+                  element._2 = durability
+                  val a = durability
+                }
+                1 ->
+                { //EquipableItemClass
+                  val (guid, equipableItemClass) = readObject()
+                  if (equipableItemClass != null)
+                    element._1 = simplify(equipableItemClass.pathName)
+                  val a = guid
+                }
+              }
+              actor.equipableItems[arrayIdx] = element
+              index = readIntPacked()
+            }
           }
-          46   ->
-          {
-            val currentAttackerPlayerNetId = propertyString()
-            attacks.add(tuple2(uniqueIds[currentAttackerPlayerNetId]!!, actor.netGUID))
-          }
+          46   -> propertyString() //ReportToken
+          47   -> actor.teamNumber = readInt(100)
           else -> return ActorCMD.process(actor, bunch, repObj, waitingHandle, data)
         }
       }
       return true
-    }
-    catch (e : Exception)
-    {
-      debugln { ("PlayerStateCMD is throwing somewhere: $e ${e.stackTrace} ${e.message} ${e.cause}") }
-    }
-    return false
+    //}
+    //catch (e : Exception)
+    //{
+    //  debugln { ("PlayerStateCMD is throwing somewhere: $e ${e.stackTrace} ${e.message} ${e.cause}") }
+    //}
+    //return false
   }
 }

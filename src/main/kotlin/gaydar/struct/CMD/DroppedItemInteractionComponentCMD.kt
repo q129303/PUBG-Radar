@@ -12,93 +12,49 @@ object DroppedItemInteractionComponentCMD
 {
   fun process(actor : Actor, bunch : Bunch, repObj : NetGuidCacheObject?, waitingHandle : Int, data : HashMap<String, Any?>) : Boolean
   {
-    try
-    {
+    //try
+    //{
       with(bunch) {
         when (waitingHandle)
         {
-        //UActorComponent
-          1    ->
-          {
-            val bReplicates = readBit()
-//          println("item $bReplicates")
-          }
-          2    ->
-          {
-            val isAlive = readBit()
-//          println("item $isAlive")
-          }
-        //USceneComponent
+          //UActorComponent
+          1    -> readBit() //bIsActive
+          2    -> readBit() //bReplicates
+          //USceneComponent
           3    ->
-          {
-            val attachParent = readObject()
-            val a = attachParent
-//          println("attachParent:$attachParent")
-          }
-          4    ->
-          {
-            val arraySize = readUInt16()
+          {//TArray<class USceneComponent*> AttachChildren
+            readUInt16()
             var index = readIntPacked()
             while (index != 0)
             {
-              val (netguid, obj) = readObject()
-//            println("$netguid,$obj")
+              readObject()
               index = readIntPacked()
             }
           }
-          5    ->
-          {
-            val attachSocketName = readName()
-            val a = attachSocketName
-          }
-          6    ->
-          {
-            val bReplicatesAttachmentReference = readBit()
-            val a = bReplicatesAttachmentReference
-          }
-          7    ->
-          {
-            val bReplicatesAttachment = readBit()
-            val a = bReplicatesAttachment
-          }
-          8    ->
-          {
-            val bAbsoluteLocation = readBit()
-            val a = bAbsoluteLocation
-          }
-          9    ->
-          {
-            val bAbsoluteRotation = readBit()
-            val a = bAbsoluteRotation
-          }
-          10   ->
-          {
-            val bAbsoluteScale = readBit()
-            val a = bAbsoluteScale
-          }
-          11   ->
-          {
-            val bVisible = readBit()
-            val a = bVisible
-          }
+          4    -> readObject() //AttachParent
+          5    -> readName() //AttachSocketName
+          6    -> readBit() //bAbsoluteLocation
+          7    -> readBit() //bAbsoluteRotation
+          8    -> readBit() //bAbsoluteScale
+          9    -> readBit() //bReplicatesAttachment
+          10   -> readBit() //bReplicatesAttachmentReference
+          11   -> readBit() //bVisible
           12   ->
           {
             val relativeLocation = propertyVector()
             data["relativeLocation"] = Vector2(relativeLocation.x, relativeLocation.y)
-//          println("relativeLocation:$relativeLocation")
           }
           13   ->
           {
             val relativeRotation = readRotationShort()
             data["relativeRotation"] = relativeRotation.y
-//          println("relativeRotation:$relativeRotation")
           }
           14   ->
           {
             val relativeScale3D = propertyVector()
             val a = relativeScale3D
           }
-        //DroppedItemInteractionComponent
+          //DroppedItemInteractionComponent
           15   ->
           {
             val (itemGUID, _) = readObject()
@@ -112,11 +68,11 @@ object DroppedItemInteractionComponentCMD
         }
       }
       return true
-    }
-    catch (e : Exception)
-    {
-      debugln { ("DroppedItemInteractionComp is throwing somewhere: $e ${e.stackTrace} ${e.message} ${e.cause}") }
-    }
-    return false
+    //}
+    //catch (e : Exception)
+    //{
+    //  debugln { ("DroppedItemInteractionComp is throwing somewhere: $e ${e.stackTrace} ${e.message} ${e.cause}") }
+    //}
+    //return false
   }
 }

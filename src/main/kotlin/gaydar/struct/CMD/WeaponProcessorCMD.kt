@@ -11,13 +11,14 @@ object WeaponProcessorCMD
 {
   fun process(actor : Actor, bunch : Bunch, repObj : NetGuidCacheObject?, waitingHandle : Int, data : HashMap<String, Any?>) : Boolean
   {
-    try
-    {
+    //try
+    //{
       with(bunch) {
         when (waitingHandle)
         {
-        //AWeaponProcessor
-          16   ->
+          //AWeaponProcessor
+          16   -> propertyInt() //CurrentWeaponIndex
+          17   ->
           {//EquippedWeapons
             val arraySize = readUInt16()
             actorHasWeapons.compute(actor.owner!!) { _, equippedWeapons ->
@@ -33,20 +34,15 @@ object WeaponProcessorCMD
               equippedWeapons
             }
           }
-          17   ->
-          {//CurrentWeaponIndex
-            val currentWeaponIndex = propertyInt()
-//          println("$actor carry $currentWeaponIndex")
-          }
           else -> return ActorCMD.process(actor, bunch, repObj, waitingHandle, data)
         }
         return true
       }
-    }
-    catch (e : Exception)
-    {
-      debugln { ("WeaponProcessor is throwing somewhere: $e ${e.stackTrace} ${e.message} ${e.cause}") }
-    }
-    return false
+    //}
+    //catch (e : Exception)
+    //{
+    //  debugln { ("WeaponProcessor is throwing somewhere: $e ${e.stackTrace} ${e.message} ${e.cause}") }
+    //}
+    //return false
   }
 }

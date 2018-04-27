@@ -11,112 +11,41 @@ object TeamCMD
 
   fun process(actor : Actor, bunch : Bunch, repObj : NetGuidCacheObject?, waitingHandle : Int, data : HashMap<String, Any?>) : Boolean
   {
-    try
-    {
+    //try
+    //{
       actor as Team
       with(bunch) {
         //      println("${actor.netGUID} $waitingHandle")
         when (waitingHandle)
         {
-          16   ->
-          {
-            val playerLocation = propertyVector100()
-            val a = playerLocation
-          }
-          17   ->
-          {
-            val playerRotation = readRotationShort()
-            val a = playerRotation
-          }
-          18   ->
-          {
-            val playerName = propertyString()
-          }
-          19   ->
-          {//Health
-            val health = readUInt8()
-            val a = health
-          }
-          20   ->
-          {//HealthMax
-            val HealthMax = readUInt8()
-            val a = HealthMax
-          }
-          21   ->
-          {//GroggyHealth
-            val GroggyHealth = readUInt8()
-            val a = GroggyHealth
-          }
-          22   ->
-          {//GroggyHealthMax
-            val GroggyHealthMax = readUInt8()
-            val a = GroggyHealthMax
-          }
-          23   ->
-          {//MapMarkerPosition
-            val MapMarkerPosition = readVector2D()
-            actor.mapMarkerPosition.set(MapMarkerPosition)
-          }
-          24   ->
-          {//bIsDying
-            val bIsDying = readBit()
-            val a = bIsDying
-          }
-          25   ->
-          {//bIsGroggying
-            val bIsGroggying = readBit()
-            val a = bIsGroggying
-          }
-          26   ->
-          {//bQuitter
-            val bQuitter = readBit()
-            val a = bQuitter
-          }
-          27   ->
-          {//bShowMapMarker
-            val bShowMapMarker = readBit()
-            actor.showMapMarker = bShowMapMarker
-          }
-          28   ->
-          {//TeamVehicleType
-            val TeamVehicleType = readInt(3)
-            val a = TeamVehicleType
-          }
-          29   ->
-          {//BoostGauge
-            val BoostGauge = readFloat()
-            val a = BoostGauge
-          }
-          30   ->
-          {//MemberNumber
-            val MemberNumber = readInt8()
-            actor.memberNumber = MemberNumber
-          }
-          31   ->
-          {
-            val bUsingSquadInTeam = readBit()
-          }
-          32   ->
-          {
-            val SquadIndex = readInt8()
-          }
-          33   ->
-          {
-            val SquadMemberIndex = readInt8()
-          }
-          34   ->
-          {
-            val UniqueId = readString()
-          }
+          16   -> readBit() //bIsDying
+          17   -> readBit() //bIsGroggying
+          18   -> readFloat() //BoostGauge
+          19   -> readBit() //bQuitter
+          20   -> actor.showMapMarker = readBit()
+          21   -> readBit() //bUsingSquadInTeam
+          22   -> readUInt8() //GroggyHealth
+          23   -> readUInt8() //GroggyHealthMax
+          24   -> readUInt8() //Health
+          25   -> readUInt8() //HealthMax
+          26   -> actor.mapMarkerPosition.set(readVector2D())
+          27   -> actor.memberNumber = readUInt8()
+          28   -> propertyVector100() //PlayerLocation
+          29   -> propertyString() //PlayerName
+          30   -> readRotationShort() //PlayerRotation
+          31   -> readInt8() //SquadIndex
+          32   -> readInt8() //SquadMemberIndex
+          33   -> readInt(3) //TeamVehicleType
+          34   -> readString() //UniqueId
           else -> return ActorCMD.process(actor, bunch, repObj, waitingHandle, data)
         }
         return true
       }
-    }
-    catch (e : Exception)
-    {
-      debugln { ("TeamCMD is throwing somewhere: $e ${e.stackTrace} ${e.message} ${e.cause}") }
-    }
-    return false
+    //}
+    //catch (e : Exception)
+    //{
+    //  debugln { ("TeamCMD is throwing somewhere: $e ${e.stackTrace} ${e.message} ${e.cause}") }
+    //}
+    //return false
   }
 }
