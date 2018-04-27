@@ -93,12 +93,12 @@ object PlayerStateCMD : GameListener
                     element._1 = simplify(castableItemClass.pathName)
                 }
                 1 ->
-                { //ItemType
+                { //ItemCount
                   val itemCount = readInt32()
                   element._2 = itemCount
                 }
                 2 ->
-                { //ItemCount
+                { //ItemType
                   val ItemType = readInt(8)
                   val a = ItemType
                 }
