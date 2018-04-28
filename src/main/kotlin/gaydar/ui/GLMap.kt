@@ -50,7 +50,7 @@ import gaydar.struct.Archetype.*
 import gaydar.struct.Archetype.Plane
 import gaydar.struct.CMD.ActorCMD.actorWithPlayerState
 import gaydar.struct.CMD.CharacterCMD.actorHealth
-import gaydar.struct.CMD.CharacterCMD.selfSpectatedCount
+import gaydar.struct.CMD.CharacterCMD.spectatedCount
 import gaydar.struct.CMD.GameStateCMD.ElapsedWarningDuration
 import gaydar.struct.CMD.GameStateCMD.MatchElapsedMinutes
 import gaydar.struct.CMD.GameStateCMD.NumAlivePlayers
@@ -756,7 +756,7 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
       hubFontShadow.draw(spriteBatch, "ALIVE", windowWidth - 85f, windowHeight - 29f)
       hubFont.draw(spriteBatch, numText, windowWidth - 110f - layout.width / 2, windowHeight - 29f)
 
-      val spectatedCountText = selfSpectatedCount.toString()
+      val spectatedCountText = (spectatedCount[selfStateID] ?: 0).toString()
       val numKillsText = (playerNumKills[selfStateID] ?: 0).toString()
       if (isTeamMatch) {
         layout.setText(hubFont, spectatedCountText)

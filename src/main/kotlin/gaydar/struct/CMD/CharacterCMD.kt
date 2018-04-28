@@ -23,11 +23,11 @@ object CharacterCMD : GameListener
   override fun onGameOver()
   {
     actorHealth.clear()
-    selfSpectatedCount = 0
+    spectatedCount.clear()
   }
 
   val actorHealth = ConcurrentHashMap<NetworkGUID, Float>()
-  var selfSpectatedCount = 0
+  val spectatedCount = ConcurrentHashMap<NetworkGUID, Int>()
 
   fun process(actor : Actor, bunch : Bunch, repObj : NetGuidCacheObject?, waitingHandle : Int, data : HashMap<String, Any?>) : Boolean
   {
@@ -155,7 +155,7 @@ object CharacterCMD : GameListener
           100  -> readInt(8) //Remote_CastAnim
           101  -> propertyFloat() //ReviveCastingTime
           102  -> readInt(8) //ShoesSoundType
-          103  -> selfSpectatedCount = propertyInt() //SpectatedCount
+          103  -> spectatedCount[actor.netGUID] = propertyInt() //SpectatedCount
           104  -> readInt(4) //TargetingType
           105  ->
 		  {
