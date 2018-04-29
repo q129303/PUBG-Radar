@@ -758,12 +758,13 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
 
       val spectatedCountText = (spectatedCount[selfStateID] ?: 0).toString()
       val numKillsText = (playerNumKills[selfStateID] ?: 0).toString()
+      
+      layout.setText(hubFont, spectatedCountText)
+      spriteBatch.draw(hubpanel, windowWidth - 260f, windowHeight - 60f)
+      hubFontShadow.draw(spriteBatch, "EYES", windowWidth - 215f, windowHeight - 29f)
+      hubFont.draw(spriteBatch, "$spectatedCountText", windowWidth - 240f - layout.width / 2, windowHeight - 29f)
+      
       if (isTeamMatch) {
-        layout.setText(hubFont, spectatedCountText)
-        spriteBatch.draw(hubpanel, windowWidth - 260f, windowHeight - 60f)
-        hubFontShadow.draw(spriteBatch, "EYES", windowWidth - 215f, windowHeight - 29f)
-        hubFont.draw(spriteBatch, spectatedCountText, windowWidth - 240f - layout.width / 2, windowHeight - 29f)
-
         val numAliveTeamsText = NumAliveTeams.toString()
         layout.setText(hubFont, numAliveTeamsText)
         spriteBatch.draw(hubpanel, windowWidth - 390f, windowHeight - 60f)
@@ -775,11 +776,6 @@ class GLMap(private val jsettings : Settings.jsonsettings) : InputAdapter(), App
         hubFontShadow.draw(spriteBatch, "KILLS", windowWidth - 475f, windowHeight - 29f)
         hubFont.draw(spriteBatch, "$numKillsText", windowWidth - 500f - layout.width / 2, windowHeight - 29f)
       } else {
-        layout.setText(hubFont, spectatedCountText)
-        spriteBatch.draw(hubpanel, windowWidth - 260f, windowHeight - 60f)
-        hubFontShadow.draw(spriteBatch, "EYES", windowWidth - 215f, windowHeight - 29f)
-        hubFont.draw(spriteBatch, spectatedCountText, windowWidth - 240f - layout.width / 2, windowHeight - 29f)
-
         layout.setText(hubFont, numKillsText)
         spriteBatch.draw(hubpanel, windowWidth - 390f, windowHeight - 60f)
         hubFontShadow.draw(spriteBatch, "KILLS", windowWidth - 345f, windowHeight - 29f)
